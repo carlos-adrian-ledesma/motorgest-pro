@@ -1,0 +1,3 @@
+APP_NAME = "MotorGest Pro"
+APP_VERSION = "3.1.4"
+SCHEMA_VERSION = 4

@@ -1,0 +1,36 @@
+MOTORGEST PRO V3.1.4 — PORTFOLIO EDITION PUBLIC — VALIDACIÓN FINAL
+
+PERFIL
+- Edición: Portfolio / pública.
+- Objetivo: GitHub público, portfolio y revisión por recruiters/programadores.
+- No pretende ser una distribución standalone ni contiene el producto completo.
+
+CONTENIDO PÚBLICO
+- Documentación profesional.
+- Arquitectura pública.
+- Seis capturas con datos sintéticos.
+- Módulos de código real seleccionados: database.py, privacy.py, inspection_export.py, constants.py e integrity.js.
+- Tests seleccionados de integridad, privacidad, backup/restore y documentos.
+- LICENSE propietario para código original.
+- THIRD_PARTY_NOTICES.md.
+
+EXCLUSIONES INTENCIONALES
+- app.js completo.
+- backend.py completo.
+- main.py / runtime Qt completo.
+- bridge y assets runtime completos.
+- plantillas completas de inspección.
+- herramientas BAT/PyInstaller.
+- suite privada completa.
+- bases, backups, logs, credenciales o datos reales.
+
+VALIDACIÓN
+- Python compileall de muestras públicas: OK.
+- integrity.js syntax: OK.
+- pytest de muestras públicas: 7/7 aprobados.
+- .venv: NO incluida.
+- DB real: NO incluida.
+- Backups/logs: NO incluidos.
+- Datos reales: NO incluidos.
+
+La ausencia del código completo es deliberada y está documentada en PORTFOLIO_SCOPE.md.
