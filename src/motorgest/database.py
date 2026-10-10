@@ -100,15 +100,16 @@ class StateDatabase:
             conn.execute("DELETE FROM app_state WHERE id=1")
         return True
 
+    
     def integrity_check(self) -> str:
         with closing(self.connect()) as conn, conn:
             return str(conn.execute("PRAGMA integrity_check").fetchone()[0])
 
-    
-def backup_to(self, destination: Path) -> Path:
-    destination = Path(destination)
-    destination.parent.mkdir(parents=True, exist_ok=True)
-    with closing(self.connect()) as source, closing(sqlite3.connect(destination)) as target:
-        source.backup(target)
-    return destination
+    def backup_to(self, destination: Path) -> Path:
+        destination = Path(destination)
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        with closing(self.connect()) as source, closing(sqlite3.connect(destination)) as target:
+            source.backup(target)
+        return destination
+
 
