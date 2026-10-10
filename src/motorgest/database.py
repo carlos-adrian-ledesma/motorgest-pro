@@ -1,6 +1,7 @@
 from __future__ import annotations
 import json
 import sqlite3
+from contextlib import closing
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -34,7 +35,7 @@ class StateDatabase:
         return conn
 
     def _initialize(self) -> None:
-        with self.connect() as conn:
+        with closing(self.connect()) as conn, conn:
             conn.executescript(
                 """
                 CREATE TABLE IF NOT EXISTS app_state (
@@ -76,14 +77,14 @@ class StateDatabase:
         return state
 
     def load(self) -> str | None:
-        with self.connect() as conn:
+        with closing(self.connect()) as conn, conn:
             row = conn.execute("SELECT state_json FROM app_state WHERE id=1").fetchone()
             return row[0] if row else None
 
     def save(self, raw: str) -> bool:
         state = self.validate_state(raw)
         encoded = json.dumps(state, ensure_ascii=False, separators=(",", ":"))
-        with self.connect() as conn:
+        with closing(self.connect()) as conn, conn:
             conn.execute("BEGIN IMMEDIATE")
             conn.execute(
                 "INSERT INTO app_state(id,state_json,schema_version,updated_at) VALUES(1,?,?,?) "
@@ -95,17 +96,20 @@ class StateDatabase:
         return True
 
     def clear(self) -> bool:
-        with self.connect() as conn:
+        with closing(self.connect()) as conn, conn:
             conn.execute("DELETE FROM app_state WHERE id=1")
         return True
 
+    
     def integrity_check(self) -> str:
-        with self.connect() as conn:
+        with closing(self.connect()) as conn, conn:
             return str(conn.execute("PRAGMA integrity_check").fetchone()[0])
 
     def backup_to(self, destination: Path) -> Path:
         destination = Path(destination)
         destination.parent.mkdir(parents=True, exist_ok=True)
-        with self.connect() as source, sqlite3.connect(destination) as target:
+        with closing(self.connect()) as source, closing(sqlite3.connect(destination)) as target:
             source.backup(target)
         return destination
+
+
